@@ -25,7 +25,7 @@ The feature selection techniques used are:
 
 # CODING AND OUTPUT:
 
-(i) income dataset:
+# (i) income dataset:
 
 # Import Required Libraries
 import numpy as np
@@ -42,7 +42,7 @@ from sklearn.metrics import accuracy_score
 
 # ------------------------------
 # Load Dataset
-# ------------------------------
+ 
 df = pd.read_csv("income.csv")
 
 print("Dataset Preview:")
@@ -50,7 +50,7 @@ print(df.head())
 
 # ------------------------------
 # Encode Categorical Variables
-# ------------------------------
+ 
 categorical_columns = ['JobType', 'EdType', 'maritalstatus', 'occupation',
                        'relationship', 'race', 'gender', 'nativecountry']
 
@@ -62,19 +62,19 @@ if df['SalStat'].dtype == 'object':
 
 # ------------------------------
 # Separate Features and Target
-# ------------------------------
+ 
 X = df.drop(columns=['SalStat'])
 y = df['SalStat']
 
 # ------------------------------
 # Scale Data for Chi-Square (Non-negative required)
-# ------------------------------
+ 
 scaler = MinMaxScaler()
 X_scaled = scaler.fit_transform(X)
 
 # ------------------------------
 # Filter Method: Chi-Square
-# ------------------------------
+ 
 selector_chi2 = SelectKBest(score_func=chi2, k=6)
 selector_chi2.fit(X_scaled, y)
 selected_features_chi2 = X.columns[selector_chi2.get_support()]
@@ -82,7 +82,7 @@ print("\nChi-Square Selected:", list(selected_features_chi2))
 
 # ------------------------------
 # Filter Method: ANOVA
-# ------------------------------
+ 
 selector_anova = SelectKBest(score_func=f_classif, k=5)
 selector_anova.fit(X, y)
 selected_features_anova = X.columns[selector_anova.get_support()]
@@ -91,7 +91,7 @@ print("\nANOVA Selected:", list(selected_features_anova))
 
 # ------------------------------
 # Wrapper Method: RFE
-# ------------------------------
+ 
 logreg = LogisticRegression(max_iter=1000)
 rfe = RFE(estimator=logreg, n_features_to_select=6)
 rfe.fit(X, y)
@@ -100,7 +100,7 @@ print("\nRFE Selected:", list(selected_features_rfe))
 
 # ------------------------------
 # Embedded Method: SelectFromModel
-# ------------------------------
+ 
 rf = RandomForestClassifier(n_estimators=100, random_state=42)
 
 X_train, X_test, y_train, y_test = train_test_split(
@@ -117,7 +117,7 @@ print("\nEmbedded Method Selected:", list(selected_features_embedded))
 
 # ------------------------------
 # Accuracy using Embedded Features
-# ------------------------------
+ 
 X_train_sel = selector_embedded.transform(X_train)
 X_test_sel = selector_embedded.transform(X_test)
 
@@ -126,7 +126,7 @@ y_pred = rf.predict(X_test_sel)
 
 print("\nModel Accuracy (Embedded Method):", accuracy_score(y_test, y_pred))
 
-(ii)bmi dataset:
+# (ii)bmi dataset:
 
 # Import Required Libraries
 import numpy as np
@@ -135,7 +135,7 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler, MaxAbsScaler, Ro
 
 # ------------------------------
 # Feature Scaling using BMI.csv
-# ------------------------------
+ 
 
 # Load Dataset
 df = pd.read_csv('Bmi.csv')   # Make sure bmi.csv is in the same directory
@@ -148,7 +148,7 @@ df = df.dropna()
 
 # ------------------------------
 # 1. Standard Scaling
-# ------------------------------
+ 
 df_std = df.copy()
 scaler_std = StandardScaler()
 df_std[['Height', 'Weight']] = scaler_std.fit_transform(df_std[['Height', 'Weight']])
@@ -158,7 +158,7 @@ print(df_std.head())
 
 # ------------------------------
 # 2. Min-Max Scaling
-# ------------------------------
+ 
 df_minmax = df.copy()
 scaler_minmax = MinMaxScaler()
 df_minmax[['Height', 'Weight']] = scaler_minmax.fit_transform(df_minmax[['Height', 'Weight']])
@@ -168,7 +168,7 @@ print(df_minmax.head())
 
 # ------------------------------
 # 3. MaxAbs Scaling
-# ------------------------------
+ 
 df_maxabs = df.copy()
 scaler_maxabs = MaxAbsScaler()
 df_maxabs[['Height', 'Weight']] = scaler_maxabs.fit_transform(df_maxabs[['Height', 'Weight']])
@@ -178,7 +178,7 @@ print(df_maxabs.head())
 
 # ------------------------------
 # 4. Robust Scaling
-# ------------------------------
+ 
 df_robust = df.copy()
 scaler_robust = RobustScaler()
 df_robust[['Height', 'Weight']] = scaler_robust.fit_transform(df_robust[['Height', 'Weight']])
@@ -196,11 +196,11 @@ print("\nFeature Scaling Completed Successfully.")
 
 OUTPUT:
 
-(i) income dataset:
+# (i) income dataset:
 
 <img width="1204" height="785" alt="Screenshot 2026-03-09 105318" src="https://github.com/user-attachments/assets/dfbfcce2-b3d0-442f-aa70-58bba50fb3d8" />
 
-(ii)bmi dataset:
+# (ii)bmi dataset:
 
 <img width="470" height="599" alt="Screenshot 2026-03-09 105421" src="https://github.com/user-attachments/assets/50f8d4fa-ee47-4421-b203-dc431a67d9fe" />
 
